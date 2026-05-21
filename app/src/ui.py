@@ -22,18 +22,22 @@ CSS = """
         font-family: 'DM Serif Display', serif;
         font-size: 1.1rem; color: #1a1a2e;
         border-bottom: 2px solid #1a1a2e;
-        padding-bottom: 4px; margin-top: 1.5rem; margin-bottom: 1rem;
+        padding-bottom: 4px; margin-top: 1rem; margin-bottom: 0.8rem;
     }
 
-    .risk-card { border-radius: 12px; padding: 28px 24px; text-align: center; margin-bottom: 1rem; }
-    .risk-vlow    { background: #d4edda; border-left: 6px solid #28a745; }
-    .risk-low     { background: #e8f5e9; border-left: 6px solid #66bb6a; }
-    .risk-medium  { background: #fff3cd; border-left: 6px solid #ffc107; }
-    .risk-high    { background: #ffe0b2; border-left: 6px solid #ff9800; }
-    .risk-vhigh   { background: #f8d7da; border-left: 6px solid #dc3545; }
+    .risk-card {
+        border-radius: 12px; padding: 28px 24px; text-align: center;
+        margin-bottom: 1rem; min-height: 255px;
+        display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .risk-vlow    { background: #d4edda;  }
+    .risk-low     { background: #e8f5e9;  }
+    .risk-medium  { background: #fff3cd;  }
+    .risk-high    { background: #ffe0b2;  }
+    .risk-vhigh   { background: #f8d7da;  }
 
     .risk-label { font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: #555; margin-bottom: 4px; }
-    .risk-score { font-family: 'DM Serif Display', serif; font-size: 3.2rem; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .risk-score { font-family: 'DM Serif Display', serif; font-size: 3.2rem; font-weight: 700; line-height: 1; margin-bottom: 6px; color: #1a1a2e; }
     .risk-badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
     .badge-vlow   { background: #28a745; color: white; }
     .badge-low    { background: #66bb6a; color: white; }
@@ -55,7 +59,7 @@ CSS = """
 
     .disclaimer {
         background: #fff8e6; border: 1px solid #ffe08a; border-radius: 8px;
-        padding: 12px 16px; font-size: 0.8rem; color: #7a6000; margin-top: 1.5rem;
+        padding: 12px 16px; font-size: 0.8rem; color: #7a6000; margin-top: 1rem;
     }
 
     div[data-testid="stButton"] > button {

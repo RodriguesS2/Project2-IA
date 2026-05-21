@@ -43,35 +43,26 @@ def show_results():
     hyp_metrics = bundle.get("hypertension_metrics")
 
     st.markdown('<div class="section-header">Risk Scores</div>', unsafe_allow_html=True)
-    ui.render_risk_card("Diabetes Risk", prob_diab, diab_name)
-    ui.render_risk_card("Hypertension Risk", prob_hyp, hyp_name)
+    c1, c2 = st.columns(2, gap="large")
+    with c1:
+        ui.render_risk_card("Diabetes Risk", prob_diab, diab_name)
+    with c2:
+        ui.render_risk_card("Hypertension Risk", prob_hyp, hyp_name)
 
     if diab_metrics or hyp_metrics:
         st.markdown('<div class="section-header">Model Performance (Test Set)</div>',
                     unsafe_allow_html=True)
         m1, m2 = st.columns(2)
             
-    if diab_metrics:
-        with m1:
-            st.caption("Diabetes Model")
-            st.metric("ROC-AUC", f"{diab_metrics.get('auc', 0):.3f}")
-            st.metric("F1-Score", f"{diab_metrics.get('f1', 0):.3f}")
-            
-    if hyp_metrics:
-        with m2:
-            st.caption("Hypertension Model")
-            st.metric("ROC-AUC", f"{hyp_metrics.get('auc', 0):.3f}")
-            st.metric("F1-Score", f"{hyp_metrics.get('f1', 0):.3f}")
-
+  
     ui.render_clinical_advice(prob_diab, prob_hyp)
 
 
 def show_landing():
     st.markdown("---")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Conditions Assessed", "2")
-    c2.metric("Best Model", bundle.get("diabetes_name", "-") if bundle else "-")
-    c3.metric("Model Status", "Loaded" if bundle else "Not Loaded")
+    c1, c2 = st.columns(2)
+    c1.metric("Best Model", bundle.get("diabetes_name", "-") if bundle else "-")
+    c2.metric("Model Status", "Loaded" if bundle else "Not Loaded")
 
     st.markdown(
         """
