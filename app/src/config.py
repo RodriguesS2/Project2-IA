@@ -3,20 +3,14 @@
 NUMERIC_FEATURES = [
     'age', 'bmi', 'systolic_pressure', 'diastolic_pressure',
     'glucose', 'hba1c', 'cholesterol', 'hdl_cholesterol',
-    'ldl_cholesterol', 'triglycerides',
-    # --- As 5 novas variáveis contínuas ---
-    'glucose_cholesterol_index', 'mean_arterial_pressure', 
-    'chol_hdl_ratio', 'bmi_sedentary_index', 'smoking_bp_interaction'
+    'ldl_cholesterol', 'triglycerides'
 ]
 
 ALL_FEATURES = [
     'age', 'sex', 'bmi', 'systolic_pressure', 'diastolic_pressure',
     'glucose', 'hba1c', 'cholesterol', 'hdl_cholesterol',
     'ldl_cholesterol', 'triglycerides', 'smoking',
-    'physical_activity', 'family_history_diabetes', 'family_history_hypertension',
-    # --- As 5 novas variáveis contínuas ---
-    'glucose_cholesterol_index', 'mean_arterial_pressure', 
-    'chol_hdl_ratio', 'bmi_sedentary_index', 'smoking_bp_interaction'
+    'physical_activity', 'family_history_diabetes', 'family_history_hypertension'
 ]
 
 FEATURE_LABELS = {
