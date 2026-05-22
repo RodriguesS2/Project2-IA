@@ -1,30 +1,99 @@
 import os
+import ui
+import pandas
 import streamlit as st
-from src.inputs import collect_inputs
-from src.features import engineer_features
-from src.model import load_bundle, scale_and_predict, get_importances
-from src import ui
+from model import load_bundle, scale_and_predict
+
+NUMERIC_FEATURES = [
+    'age', 'bmi', 'systolic_pressure', 'diastolic_pressure',
+    'glucose', 'hba1c', 'cholesterol', 'hdl_cholesterol',
+    'ldl_cholesterol', 'triglycerides'
+]
+
+ALL_FEATURES = [
+    'age', 'sex', 'bmi', 'systolic_pressure', 'diastolic_pressure',
+    'glucose', 'hba1c', 'cholesterol', 'hdl_cholesterol',
+    'ldl_cholesterol', 'triglycerides', 'smoking',
+    'physical_activity', 'family_history_diabetes', 'family_history_hypertension'
+]
+
+PHYS_OPTIONS = {
+    "0 days": 0, "1 day": 1, "2 days": 2, "3 days": 3,
+    "4 days": 4, "5 days": 5, "6 days": 6, "7 days": 7,
+}
+
+YES_NO = {"No": 0, "Yes": 1}
+SEX = {"Female": 0, "Male": 1}
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+#forms to collect the inputs
+def collect_inputs():
+    st.markdown('<div class="section-header">Demographics</div>', unsafe_allow_html=True)
+    sex_label = st.radio("Personal Info", list(SEX.keys()), horizontal=True)
+    age = st.number_input("Age (years) (18–90)", 18, 90, 45, 1)
+
+    st.markdown('<div class="section-header">Body/Blood Metrics</div>', unsafe_allow_html=True)
+    bmi = st.number_input("BMI (kg/m²) (15–50)", 15.0, 50.0, 26.0, 0.1)
+    systolic = st.number_input("Systolic blood pressure (mmHg) (80–200)", 80, 200, 120, 1)
+    diastolic = st.number_input("Diastolic blood pressure (mmHg) (50–120)", 50, 120, 80, 1)
+    glucose = st.number_input("Glucose (mg/dL) (50–300)", 50, 300, 100, 1)
+    hba1c = st.number_input("HbA1c (%) (4.0–15.0)", 4.0, 15.0, 5.5, 0.1)
+    cholesterol = st.number_input("Cholesterol (mg/dL) (100–400)", 100, 400, 200, 1)
+    hdl_cholesterol = st.number_input("HDL Cholesterol (mg/dL) (20–100)", 20, 100, 50, 1)
+    ldl_cholesterol = st.number_input("LDL Cholesterol (mg/dL) (50–250)", 50, 250, 100, 1)
+    triglycerides = st.number_input("Triglycerides (mg/dL) (50–400)", 50, 400, 150, 1)
+
+    st.markdown('<div class="section-header">Lifestyle</div>', unsafe_allow_html=True)
+    smoking_label = st.radio("Current smoker", list(YES_NO.keys()), horizontal=True)
+    phys_label = st.selectbox("Physical activity (0–7)", list(PHYS_OPTIONS.keys()), index=2)
+
+    st.markdown('<div class="section-header">Family History</div>', unsafe_allow_html=True)
+    fam_diabetes_label = st.radio("Diabetes in family", list(YES_NO.keys()), horizontal=True)
+    fam_hypertension_label = st.radio("Hypertension in family", list(YES_NO.keys()), horizontal=True)
+
+    st.markdown("")
+    predict = st.button("Assess Risk", use_container_width=True)
+
+    #stores the input
+    inputs = {
+        "age": float(age),
+        "sex": SEX[sex_label],
+        "bmi": float(bmi),
+        "systolic_pressure": float(systolic),
+        "diastolic_pressure": float(diastolic),
+        "glucose": float(glucose),
+        "hba1c": float(hba1c),
+        "cholesterol": float(cholesterol),
+        "hdl_cholesterol": float(hdl_cholesterol),
+        "ldl_cholesterol": float(ldl_cholesterol),
+        "triglycerides": float(triglycerides),
+        "smoking": YES_NO[smoking_label],
+        "physical_activity": PHYS_OPTIONS[phys_label],
+        "family_history_diabetes": YES_NO[fam_diabetes_label],
+        "family_history_hypertension": YES_NO[fam_hypertension_label]
+    }
+    return inputs, predict
+
+
+#prepare the user data to give to the model used
+def prepare_features(inputs):
+    df = pandas.DataFrame([dict(inputs)])
+    return df[ALL_FEATURES]
+
 st.set_page_config(
-    page_title="Health Risk Predictor",
+    page_title="Diabetes and Hypertension prediction",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
+
+#put the css
 ui.inject_css()
 
-#load the trained model
+#load the bundle/model used
 bundle = load_bundle(BASE_DIR)
 
-#sidebar form
-inputs, predict_clicked = collect_inputs()
-
-st.markdown("# Health Risk Predictor")
-st.markdown(
-    "A machine-learning proof-of-concept estimating **diabetes** and "
-    "**hypertension** risk from demographics, lab results and lifestyle."
-)
+ui.render_header()
 
 if bundle is None:
     st.warning(
@@ -32,65 +101,22 @@ if bundle is None:
         "Run the export cell in `model_building.ipynb` to create it."
     )
 
-#results and more info (TODO: see if we need to add something)
-def show_results():
-    df_features = engineer_features(inputs)
-    prob_diab, prob_hyp, _ = scale_and_predict(bundle, df_features)
+#divide the "layout"
+left, right = st.columns([1, 1.25], gap="large")
 
-    diab_name = bundle.get("diabetes_name", "")
-    hyp_name = bundle.get("hypertension_name", "")
-    diab_metrics = bundle.get("diabetes_metrics")
-    hyp_metrics = bundle.get("hypertension_metrics")
+#in the right the inputs
+with right:
+    inputs, predict_clicked = collect_inputs()
 
-    st.markdown('<div class="section-header">Risk Scores</div>', unsafe_allow_html=True)
-    c1, c2 = st.columns(2, gap="large")
-    with c1:
-        ui.render_risk_card("Diabetes Risk", prob_diab, diab_name)
-    with c2:
-        ui.render_risk_card("Hypertension Risk", prob_hyp, hyp_name)
+#in the left the info
+with left:
+    ui.render_reference_panel()
 
-    if diab_metrics or hyp_metrics:
-        st.markdown('<div class="section-header">Model Performance (Test Set)</div>',
-                    unsafe_allow_html=True)
-        m1, m2 = st.columns(2)
-            
-  
-    ui.render_clinical_advice(prob_diab, prob_hyp)
+    if predict_clicked and bundle is not None:
+        df_features = prepare_features(inputs)
+        prob_diabetes, prob_hypertension, _ = scale_and_predict(bundle, df_features)
 
-
-def show_landing():
-    st.markdown("---")
-    c1, c2 = st.columns(2)
-    c1.metric("Best Model", bundle.get("diabetes_name", "-") if bundle else "-")
-    c2.metric("Model Status", "Loaded" if bundle else "Not Loaded")
-
-    st.markdown(
-        """
-        ### How it works
-        1. **Fill the sidebar form** - choose sliders or type the values directly.
-        2. **Press Predict** - the app feeds your 15 inputs into both
-           classifiers.
-        3. **Read the scores** - each condition gets a probability and a risk band.
-        4. **Feature importance** shows which inputs pushed the prediction.
-
-        ### Risk tiers
-        | Probability | Tier |
-        |---|---|
-        | < 30% | Very Low |
-        | 30 - 50% | Low - Moderate |
-        | 50 - 70% | Moderate - High |
-        | 70 - 85% | High |
-        | > 85% | Very High |
-        """
-    )
-
-
-# Decide what to render. We only predict when a model is loaded.
-if predict_clicked and bundle is not None:
-    show_results()
-
-elif predict_clicked and bundle is None:
-    st.info("Load the model first (see the warning above), then press Predict again.")
-
-else:
-    show_landing()
+        st.markdown('<div class="section-header">Assessment Result</div>', unsafe_allow_html=True)
+        ui.render_risk_card("Diabetes risk", prob_diabetes)
+        ui.render_risk_card("Hypertension risk", prob_hypertension)
+        ui.render_clinical_advice(prob_diabetes, prob_hypertension)
