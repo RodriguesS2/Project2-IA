@@ -29,8 +29,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 #forms to collect the inputs
 def collect_inputs():
-    st.markdown('<div class="section-header">Demographics</div>', unsafe_allow_html=True)
-    sex_label = st.radio("Personal Info", list(SEX.keys()), horizontal=True)
+    st.markdown('<div class="section-header"> Personal Info </div>', unsafe_allow_html=True)
+    sex_label = st.radio("Genre", list(SEX.keys()), horizontal=True)
     age = st.number_input("Age (years) (18–90)", 18, 90, 45, 1)
 
     st.markdown('<div class="section-header">Body/Blood Metrics</div>', unsafe_allow_html=True)
