@@ -186,19 +186,19 @@ def render_reference_panel():
 <div class="panel-title">Clinical Reference Ranges</div>
 <table class="ref">
 <tr><th> Measure </th><th> Normal </th><th> Borderline </th><th> At risk </th></tr>
-<tr><td class="m"> Glucose (mg/dL) </td><td class="ok"> &lt; 100 </td><td class="warn"> 100–125 </td><td class="bad"> &ge; 126 </td></tr>
-<tr><td class="m"> HbA1c (%) </td><td class="ok"> &lt; 5.7 </td><td class="warn"> 5.7–6.4 </td><td class="bad"> &ge; 6.5 </td></tr>
-<tr><td class="m"> Blood pressure (mmHg) </td><td class="ok"> &lt;120/80 </td><td class="warn"> 120–139/80–89 </td><td class="bad"> &ge;140/90 </td></tr>
-<tr><td class="m"> BMI (kg/m&sup2;) </td><td class="ok"> 18.5–24.9 </td><td class="warn"> 25–29.9 </td><td class="bad"> &ge; 30 </td></tr>
-<tr><td class="m"> LDL cholesterol </td><td class="ok"> &lt; 100 </td><td class="warn"> 100–159 </td><td class="bad"> &ge; 160 </td></tr>
-<tr><td class="m"> HDL cholesterol </td><td class="ok"> &ge; 60 </td><td class="warn"> 40–59 </td><td class="bad"> &lt; 40 </td></tr>
-<tr><td class="m"> Triglycerides </td><td class="ok"> &lt; 150 </td><td class="warn"> 150–199 </td><td class="bad"> &ge; 200 </td></tr>
+<tr><td class="m"> Glucose (mg/dL) </td><td class="ok"> &lt; 100 </td><td class="warn"> 100-125 </td><td class="bad"> &ge; 126 </td></tr>
+<tr><td class="m"> HbA1c (%) </td><td class="ok"> &lt; 5.7 </td><td class="warn"> 5.7-6.4 </td><td class="bad"> &ge; 6.5 </td></tr>
+<tr><td class="m"> Blood pressure (mmHg) </td><td class="ok"> &lt;120/80 </td><td class="warn"> 120-139/80-89 </td><td class="bad"> &ge;140/90 </td></tr>
+<tr><td class="m"> BMI (kg/m&sup2;) </td><td class="ok"> 18.5-24.9 </td><td class="warn"> 25-29.9 </td><td class="bad"> &ge; 30 </td></tr>
+<tr><td class="m"> LDL cholesterol </td><td class="ok"> &lt; 100 </td><td class="warn"> 100-159 </td><td class="bad"> &ge; 160 </td></tr>
+<tr><td class="m"> HDL cholesterol </td><td class="ok"> &ge; 60 </td><td class="warn"> 40-59 </td><td class="bad"> &lt; 40 </td></tr>
+<tr><td class="m"> Triglycerides </td><td class="ok"> &lt; 150 </td><td class="warn"> 150-199 </td><td class="bad"> &ge; 200 </td></tr>
 </table>
 <div class="panel-title" style="margin-top: 15px;"> Risks </div>
 <div class="band"><strong> &lt; 30% </strong> &mdash; Very Low </div>
-<div class="band"><strong> 30–50% </strong> &mdash; Low/Moderate </div>
-<div class="band"><strong> 50–70% </strong> &mdash; Moderate/High </div>
-<div class="band"><strong> 70–85% </strong> &mdash; High </div>
+<div class="band"><strong> 30-50% </strong> &mdash; Low/Moderate </div>
+<div class="band"><strong> 50-70% </strong> &mdash; Moderate/High </div>
+<div class="band"><strong> 70-85% </strong> &mdash; High </div>
 <div class="band"><strong> &gt; 85% </strong> &mdash; Very High </div>
 </div>"""
     
