@@ -32,5 +32,6 @@ def scale_and_predict(bundle, df_features):
 
     prob_diabetes = bundle["diabetes"].predict_proba(df_scaled)[0][1]
     prob_hypertension = bundle["hypertension"].predict_proba(df_scaled)[0][1]
+    
     return prob_diabetes, prob_hypertension, df_scaled
 
